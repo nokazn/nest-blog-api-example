@@ -16,11 +16,11 @@ export class UsersService {
     return await this.userRepository.create<User>(user);
   }
 
-  async findOneByEmail(email: string): Promise<User> {
+  async findOneByEmail(email: string): Promise<User | null> {
     return await this.userRepository.findOne<User>({ where: { email } });
   }
 
-  async findOneById(id: string): Promise<User> {
+  async findOneById(id: string): Promise<User | null> {
     return await this.userRepository.findOne<User>({ where: { id } });
   }
 }
