@@ -1,9 +1,10 @@
 import { Provider } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 
-import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../constants';
 import { IDatabaseConfigAttributes } from './interfaces/dbConfig.interface';
 import { databaseConfig } from './database.config';
+import { User } from 'src/modules/users/users.entity';
+import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../constants';
 
 export const databaseProviders: Provider[] = [
   {
@@ -22,7 +23,7 @@ export const databaseProviders: Provider[] = [
       }
 
       const sequelize = new Sequelize(config);
-      sequelize.addModels(['modules go here.']);
+      sequelize.addModels([User]);
       await sequelize.sync();
 
       return sequelize;
