@@ -11,8 +11,8 @@ import { DatabaseModule } from './core/database/database.module';
 @Module({
   imports: [
     PostsModule,
-    DatabaseModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    DatabaseModule,
   ],
   controllers: [AppController, CatsController],
   providers: [AppService, CatsService],

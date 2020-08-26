@@ -1,10 +1,10 @@
 export interface IDatabaseConfigAttributes {
-  userName?: string;
+  username?: string;
   password: string;
   database?: string;
   host?: string;
-  port: number | string;
-  dialect?: string;
+  port: number;
+  dialect?: 'postgres';
   urlDatabase?: string;
 }
 
