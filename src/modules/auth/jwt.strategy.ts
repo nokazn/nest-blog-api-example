@@ -4,13 +4,20 @@ import { Strategy, ExtractJwt } from 'passport-jwt';
 import { UsersService } from '../users/users.service';
 import { TODO } from 'types';
 
+const { JWT_KEY } = process.env;
+if (JWT_KEY == null) {
+  const message = '環境変数が設定されていません。';
+  console.error(message, process.env);
+  throw new Error(message);
+}
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly userService: UsersService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_KEY,
+      secretOrKey: JWT_KEY,
     });
   }
 

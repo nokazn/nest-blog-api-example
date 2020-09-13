@@ -4,23 +4,23 @@ import { IDatabaseConfig } from './interfaces/dbConfig.interface';
 dotenv.config();
 
 const {
-  DB_USER_NAME,
-  DB_PASSWORD,
-  DB_NAME_DEVELOPMENT,
-  DB_NAME_PRODUCTION,
-  DB_NAME_TEST,
-  DB_HOST,
-  DB_PORT,
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_DB_DEVELOPMENT,
+  POSTGRES_DB_PRODUCTION,
+  POSTGRES_DB_TEST,
+  POSTGRES_HOST,
+  POSTGRES_PORT,
 } = process.env;
 
 if (
-  DB_USER_NAME == null ||
-  DB_PASSWORD == null ||
-  DB_NAME_DEVELOPMENT == null ||
-  DB_NAME_PRODUCTION == null ||
-  DB_NAME_TEST == null ||
-  DB_HOST == null ||
-  DB_PORT == null
+  POSTGRES_USER == null ||
+  POSTGRES_PASSWORD == null ||
+  POSTGRES_DB_DEVELOPMENT == null ||
+  POSTGRES_DB_PRODUCTION == null ||
+  POSTGRES_DB_TEST == null ||
+  POSTGRES_HOST == null ||
+  POSTGRES_PORT == null
 ) {
   const message = '環境変数が設定されていません。';
   console.error(message, process.env);
@@ -29,27 +29,27 @@ if (
 
 export const databaseConfig: IDatabaseConfig = {
   development: {
-    username: DB_USER_NAME,
-    password: DB_PASSWORD,
-    database: DB_NAME_DEVELOPMENT,
-    host: DB_HOST,
-    port: parseInt(DB_PORT, 10),
+    username: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+    database: POSTGRES_DB_DEVELOPMENT,
+    host: POSTGRES_HOST,
+    port: parseInt(POSTGRES_PORT, 10),
     dialect: 'postgres',
   },
   test: {
-    username: DB_USER_NAME,
-    password: DB_PASSWORD,
-    database: DB_NAME_TEST,
-    host: DB_HOST,
-    port: parseInt(DB_PORT, 10),
+    username: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+    database: POSTGRES_DB_TEST,
+    host: POSTGRES_HOST,
+    port: parseInt(POSTGRES_PORT, 10),
     dialect: 'postgres',
   },
   production: {
-    username: DB_USER_NAME,
-    password: DB_PASSWORD,
-    database: DB_NAME_PRODUCTION,
-    host: DB_HOST,
-    port: parseInt(DB_PORT, 10),
+    username: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+    database: POSTGRES_DB_PRODUCTION,
+    host: POSTGRES_HOST,
+    port: parseInt(POSTGRES_PORT, 10),
     dialect: 'postgres',
   },
 };
