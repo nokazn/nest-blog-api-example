@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { UserDto } from '../users/dto/user.dto';
 import { TODO } from 'types';
+import { UserDataValues } from './interfaces/auth.interfaces';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +24,6 @@ export class AuthService {
     const isMatched = await this.comparePassword(password, user.password);
     if (isMatched) return null;
 
-    // @todo dataValues
     return {
       email,
       name: user.name,
@@ -39,16 +39,17 @@ export class AuthService {
     };
   }
 
-  async create(user: UserDto): Promise<{ user: TODO; token: string }> {
+  async create(
+    user: UserDto,
+  ): Promise<{ user: UserDataValues; token: string }> {
     const password = await this.hashPassword(user.password);
-    const newUser = await this.userService.create({
+    const createdUser = await this.userService.create({
       ...user,
       password,
     });
 
-    // @todo dataValues
-    const { name, email, gender } = newUser;
-    const newUserParams = { name, email, gender };
+    const { id, name, email, gender, createdAt, updatedAt } = createdUser;
+    const newUserParams = { id, name, email, gender, createdAt, updatedAt };
     const token = await this.generateToken(newUserParams);
 
     return {

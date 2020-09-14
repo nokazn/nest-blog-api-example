@@ -11,11 +11,13 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Request() req: TODO): Promise<{ user: TODO; token: string }> {
-    return await this.authService.login(req.user);
+    const user = await this.authService.login(req.user);
+    return user;
   }
 
   @Post('signup')
   async signUp(@Body() user: UserDto): Promise<{ user: TODO; token: string }> {
-    return await this.authService.create(user);
+    const createdUser = await this.authService.create(user);
+    return createdUser;
   }
 }

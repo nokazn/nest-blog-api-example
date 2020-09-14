@@ -13,7 +13,8 @@ export class UsersService {
   }
 
   async create(user: UserDto): Promise<User> {
-    return await this.userRepository.create<User>(user);
+    const createdUser = await this.userRepository.create<User>(user);
+    return createdUser;
   }
 
   async findOneByEmail(email: string): Promise<User | null> {
