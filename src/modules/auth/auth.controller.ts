@@ -3,6 +3,7 @@ import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserDto } from '../users/dto/user.dto';
 import { LocalGuard } from './guards/local.guard';
+import { DoesUserExist } from '../../core/guards/doseUserExist.guard';
 import {
   LoginUserDataValues,
   LoginUserBody,
@@ -22,6 +23,7 @@ export class AuthController {
     return loginedUser;
   }
 
+  @UseGuards(DoesUserExist)
   @Post('signup')
   async signUp(
     @Body() user: UserDto,
