@@ -7,7 +7,11 @@ export interface UserDataValues {
   updatedAt: any;
 }
 
-export interface LoginUserDataValues {
-  email: string;
+export interface LoginUserDto {
+  username: string;
   password: string;
+}
+
+export interface LoginUserDataValues {
+  username: string;
 }

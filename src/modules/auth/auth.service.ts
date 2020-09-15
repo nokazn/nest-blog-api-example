@@ -5,7 +5,11 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { UserDto } from '../users/dto/user.dto';
 import { TODO } from 'types';
-import { UserDataValues } from './interfaces/auth.interfaces';
+import {
+  LoginUserDataValues,
+  LoginUserDto,
+  UserDataValues,
+} from './interfaces/auth.interfaces';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +26,7 @@ export class AuthService {
     if (!user) return null;
 
     const isMatched = await this.comparePassword(password, user.password);
-    if (isMatched) return null;
+    if (!isMatched) return null;
 
     return {
       email,
@@ -31,10 +35,14 @@ export class AuthService {
     };
   }
 
-  async login(user: TODO): Promise<{ user: TODO; token: string }> {
+  async login(
+    user: LoginUserDto,
+  ): Promise<{ user: LoginUserDataValues; token: string }> {
     const token = await this.generateToken(user);
+    const { username } = user;
+
     return {
-      user,
+      user: { username },
       token,
     };
   }
@@ -59,10 +67,10 @@ export class AuthService {
   }
 
   private async comparePassword(
-    inputPassword: string,
+    incomingPassword: string,
     dbPassword: string,
   ): Promise<boolean> {
-    const isMatched = await bcrypt.compare(inputPassword, dbPassword);
+    const isMatched = await bcrypt.compare(incomingPassword, dbPassword);
     return isMatched;
   }
 
