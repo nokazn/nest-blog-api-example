@@ -7,7 +7,7 @@ import { UserDto } from '../users/dto/user.dto';
 import { TODO } from 'types';
 import {
   LoginUserDataValues,
-  LoginUserDto,
+  LoginUserBody,
   UserDataValues,
 } from './interfaces/auth.interfaces';
 
@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   async login(
-    user: LoginUserDto,
+    user: LoginUserBody,
   ): Promise<{ user: LoginUserDataValues; token: string }> {
     const token = await this.generateToken(user);
     const { username } = user;

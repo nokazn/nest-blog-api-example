@@ -5,7 +5,7 @@ import { UserDto } from '../users/dto/user.dto';
 import { LocalGuard } from './guards/local.guard';
 import {
   LoginUserDataValues,
-  LoginUserDto,
+  LoginUserBody,
   UserDataValues,
 } from './interfaces/auth.interfaces';
 
@@ -16,7 +16,7 @@ export class AuthController {
   @UseGuards(LocalGuard)
   @Post('login')
   async login(
-    @Body() user: LoginUserDto,
+    @Body() user: LoginUserBody,
   ): Promise<{ user: LoginUserDataValues; token: string }> {
     const loginedUser = await this.authService.login(user);
     return loginedUser;
