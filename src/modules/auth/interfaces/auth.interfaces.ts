@@ -2,7 +2,7 @@ export interface UserDataValues {
   id: any;
   name: string;
   email: string;
-  gender: string;
+  gender: 'male' | 'female';
   createdAt: any;
   updatedAt: any;
 }

@@ -26,5 +26,5 @@ export class User extends Model<User> {
     values: ['male', 'female'],
     allowNull: false,
   })
-  gender!: string;
+  gender!: 'male' | 'female';
 }
