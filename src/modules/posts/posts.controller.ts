@@ -56,7 +56,6 @@ export class PostsController {
       incomingPost,
       req.user.id,
     );
-
     if (numberOfUpdatedRows === 0) {
       throw new NotFoundException("This post doesn't exist.");
     }
@@ -71,7 +70,6 @@ export class PostsController {
     @Req() req: AuthenticatedRequest,
   ): Promise<string> {
     const wasDeleted = await this.postService.delete(id, req.user.id);
-
     if (wasDeleted === 0) {
       throw new NotFoundException("This post doesn't exist.");
     }
