@@ -7,10 +7,16 @@ import { UserDto } from '../users/dto/user.dto';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
-    super();
+    // デフォルトのままだが明示的に指定している
+    super({
+      usernameField: 'username',
+      passwordField: 'password',
+    });
   }
 
-  // username と password というフィールドを読んで検証する
+  /**
+   * デフォルトでは username と password というフィールドを読んで検証する
+   */
   async validate(
     username: string,
     password: string,

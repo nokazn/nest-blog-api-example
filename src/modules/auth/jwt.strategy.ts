@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { UsersService } from '../users/users.service';
+import { ValidatedUserDataValues } from './interfaces/auth.interfaces';
 
 const { JWT_KEY } = process.env;
 if (JWT_KEY == null) {
@@ -20,9 +21,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: { id: string }): Promise<{ id: string }> {
-    const user = await this.userService.findOneById(payload.id);
-    if (!user) {
+  /**
+   * Bearer トークンをデコードしたものが jwtService.signAsync で生成したトークンと同じか検証する
+   */
+  async validate(
+    payload: ValidatedUserDataValues,
+  ): Promise<ValidatedUserDataValues> {
+    const user = await this.userService.findOneByEmail(payload.email);
+    if (user == null) {
       throw new UnauthorizedException(
         'You are note authorized to perform the operation.',
       );
