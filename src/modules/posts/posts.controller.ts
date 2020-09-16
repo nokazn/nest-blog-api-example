@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { AuthenticatedRequest } from '../auth/interfaces/auth.interfaces';
-import { PostDto } from './dto/post.dto';
+import { PostDto, UpdatePostDto } from './dto/post.dto';
 
 import { Post as PostEntity } from './post.entity';
 import { PostsService } from './posts.service';
@@ -48,7 +48,7 @@ export class PostsController {
   @Put(':id')
   async update(
     @Param('id') id: number,
-    @Body() incomingPost: Partial<PostDto>,
+    @Body() incomingPost: UpdatePostDto,
     @Req() req: AuthenticatedRequest,
   ): Promise<PostEntity> {
     const { numberOfUpdatedRows, post } = await this.postService.update(

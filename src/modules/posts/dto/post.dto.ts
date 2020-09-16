@@ -8,3 +8,10 @@ export class PostDto {
   @IsNotEmpty()
   readonly body!: string;
 }
+
+export class UpdatePostDto {
+  @MinLength(4)
+  readonly title!: string;
+
+  readonly body!: string;
+}

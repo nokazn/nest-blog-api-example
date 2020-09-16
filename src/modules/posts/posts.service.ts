@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { User } from '../users/user.entity';
 
 import { POST_REPOSITORY } from '../../core/constants';
-import { PostDto } from './dto/post.dto';
+import { PostDto, UpdatePostDto } from './dto/post.dto';
 import { Post } from './post.entity';
 
 @Injectable()
@@ -53,7 +53,7 @@ export class PostsService {
 
   async update(
     id: number,
-    data: Partial<PostDto>,
+    data: UpdatePostDto,
     userId: number,
   ): Promise<{
     numberOfUpdatedRows: number;
