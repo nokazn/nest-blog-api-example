@@ -3,7 +3,7 @@ import { Sequelize } from 'sequelize-typescript';
 
 import { IDatabaseConfigAttributes } from './interfaces/dbConfig.interface';
 import { databaseConfig } from './database.config';
-import { User } from 'src/modules/users/users.entity';
+import { User } from 'src/modules/users/user.entity';
 import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../constants';
 
 export const databaseProviders: Provider[] = [
