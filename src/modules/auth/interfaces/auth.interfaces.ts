@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 export interface UserDataValues {
   id: any;
   name: string;
@@ -7,11 +9,21 @@ export interface UserDataValues {
   updatedAt: any;
 }
 
-export interface LoginUserBody {
-  username: string;
-  password: string;
+export interface ValidatedUserDataValues {
+  id: number;
+  email: string;
+  name: string;
+  gender: 'male' | 'female';
 }
 
+export type AuthenticatedRequest<
+  T extends Partial<ValidatedUserDataValues> = ValidatedUserDataValues
+> = Request & {
+  user: T extends never ? T : ValidatedUserDataValues;
+};
+
 export interface LoginUserDataValues {
-  username: string;
+  email: string;
+  name: string;
+  gender: string;
 }

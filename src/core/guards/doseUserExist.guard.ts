@@ -22,7 +22,7 @@ export class DoesUserExist implements CanActivate {
       request.body.email,
     );
     if (doesUserExist) {
-      throw new ForbiddenException('This email already exist');
+      throw new ForbiddenException('This email already exist.');
     }
     return true;
   }

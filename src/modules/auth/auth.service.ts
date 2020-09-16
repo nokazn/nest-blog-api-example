@@ -1,13 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { UsersService } from '../users/users.service';
-import { UserDto } from '../users/dto/user.dto';
-import { TODO } from 'types';
+import { UserDto, LoginUserDto } from '../users/dto/user.dto';
 import {
+  ValidatedUserDataValues,
   LoginUserDataValues,
-  LoginUserBody,
   UserDataValues,
 } from './interfaces/auth.interfaces';
 
@@ -18,31 +17,44 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  /**
+   * localStrategy から呼び出す
+   * 返り値は req.user に入れられる
+   */
   async validateUser(
     email: string,
     password: string,
-  ): Promise<Omit<UserDto, 'password'> | null> {
+  ): Promise<ValidatedUserDataValues | null> {
     const user = await this.userService.findOneByEmail(email);
-    if (!user) return null;
+    if (user == null) return null;
 
     const isMatched = await this.comparePassword(password, user.password);
     if (!isMatched) return null;
 
+    const { id, name, gender } = user;
     return {
+      id,
       email,
-      name: user.name,
-      gender: user.gender,
+      name,
+      gender,
     };
   }
 
+  /**
+   * validateUser で返した user でトークンを生成する
+   */
   async login(
-    user: LoginUserBody,
+    incomingUser: LoginUserDto,
+    user: ValidatedUserDataValues,
   ): Promise<{ user: LoginUserDataValues; token: string }> {
+    if (incomingUser == null || user == null) {
+      throw new UnauthorizedException('Invalid user credentials.');
+    }
+
     const token = await this.generateToken(user);
-    const { username } = user;
 
     return {
-      user: { username },
+      user,
       token,
     };
   }
@@ -50,6 +62,7 @@ export class AuthService {
   async create(
     user: UserDto,
   ): Promise<{ user: UserDataValues; token: string }> {
+    // ハッシュ化したパスワード
     const password = await this.hashPassword(user.password);
     const createdUser = await this.userService.create({
       ...user,
@@ -57,15 +70,22 @@ export class AuthService {
     });
 
     const { id, name, email, gender, createdAt, updatedAt } = createdUser;
-    const newUserParams = { id, name, email, gender, createdAt, updatedAt };
-    const token = await this.generateToken(newUserParams);
+    const token = await this.generateToken({
+      id,
+      email,
+      name,
+      gender,
+    });
 
     return {
-      user: newUserParams,
+      user: { id, name, email, gender, createdAt, updatedAt },
       token,
     };
   }
 
+  /**
+   * 送信されたパスワードとデータベース内のパスワードを比較
+   */
   private async comparePassword(
     incomingPassword: string,
     dbPassword: string,
@@ -74,11 +94,17 @@ export class AuthService {
     return isMatched;
   }
 
-  private async generateToken(user: TODO): Promise<string> {
+  /**
+   * 与えられたオブジェクトから JWT トークンを生成
+   */
+  private async generateToken(user: ValidatedUserDataValues): Promise<string> {
     const token = await this.jwtService.signAsync(user);
     return token;
   }
 
+  /**
+   * パスワードをハッシュ化
+   */
   private async hashPassword(password: string): Promise<string> {
     const hash = await bcrypt.hash(password, 10);
     return hash;

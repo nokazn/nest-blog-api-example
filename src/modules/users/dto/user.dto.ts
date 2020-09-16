@@ -23,3 +23,12 @@ export class UserDto {
   })
   readonly gender!: 'male' | 'female';
 }
+
+export class LoginUserDto {
+  @IsNotEmpty()
+  @IsEmail()
+  readonly username!: string;
+
+  @IsNotEmpty()
+  readonly password!: string;
+}
